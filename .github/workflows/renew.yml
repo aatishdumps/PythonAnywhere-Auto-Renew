@@ -71,12 +71,12 @@ jobs:
           git commit -m "log: workflow run SUCCESS on $TIMESTAMP"
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
           git push origin "$REF_NAME"
+
+          echo "✅ Success logged and committed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           REF_NAME: ${{ github.ref_name }}
-
-          echo "✅ Success logged and committed"
 
       - name: Keep Alive Workflow (Failure)
         if: failure()
@@ -95,9 +95,9 @@ jobs:
           git commit -m "log: workflow run FAILED on $TIMESTAMP"
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
           git push origin "$REF_NAME"
+
+          echo "❌ Failure logged and committed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           REF_NAME: ${{ github.ref_name }}
-
-          echo "❌ Failure logged and committed"
