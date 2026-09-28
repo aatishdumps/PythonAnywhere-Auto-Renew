@@ -14,8 +14,11 @@ jobs:
     steps:
       - name: Checkout repository
         run: |
-          git clone --depth=50 https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.ref_name }}
+          git clone --depth=50 "https://github.com/${REPOSITORY}.git" .
+          git checkout "$REF_NAME"
+        env:
+          REPOSITORY: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
 
       - name: Setup Python
         run: |
@@ -69,8 +72,12 @@ jobs:
           # Commit the log
           git add $LOG_FILE
           git commit -m "log: workflow run SUCCESS on $TIMESTAMP"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push origin ${{ github.ref_name }}
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
+          git push origin "$REF_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
 
           echo "✅ Success logged and committed"
 
@@ -89,7 +96,11 @@ jobs:
           # Commit the log
           git add $LOG_FILE
           git commit -m "log: workflow run FAILED on $TIMESTAMP"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          git push origin ${{ github.ref_name }}
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
+          git push origin "$REF_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
 
           echo "❌ Failure logged and committed"

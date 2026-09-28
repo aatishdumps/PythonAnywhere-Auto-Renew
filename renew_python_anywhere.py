@@ -16,12 +16,6 @@ LOG_FILE = ".github/logs/workflow_runs.log"
 ACCOUNT_PATTERN = re.compile(r"^ACCOUNT_(\d+)_(USERNAME|PASSWORD)$")
 
 
-def mask(value):
-    """Ask GitHub Actions to redact a value from the live job log."""
-    if value and os.environ.get("GITHUB_ACTIONS") == "true":
-        print(f"::add-mask::{value}")
-
-
 def get_accounts_from_env():
     """Return configured accounts, incomplete pairs, and duplicate warnings."""
     accounts = []
@@ -62,8 +56,6 @@ def get_accounts_from_env():
                 continue
             seen_credentials.add((username, password))
             accounts.append((label, username, password))
-            mask(username)
-            mask(password)
 
     legacy_username = os.environ.get("PA_USERNAME", "").strip()
     legacy_password = os.environ.get("PA_PASSWORD", "").strip()
@@ -74,8 +66,6 @@ def get_accounts_from_env():
             else:
                 seen_credentials.add((legacy_username, legacy_password))
                 accounts.append(("PA", legacy_username, legacy_password))
-                mask(legacy_username)
-                mask(legacy_password)
         else:
             incomplete.append("PA_USERNAME/PA_PASSWORD")
 
@@ -99,8 +89,6 @@ def get_accounts_from_env():
             continue
         seen_credentials.add((username, password))
         accounts.append((f"ACCOUNT_{index}", username, password))
-        mask(username)
-        mask(password)
 
     return accounts, incomplete, warnings
 

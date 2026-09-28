@@ -12,10 +12,6 @@ on:
       - ".github/dependabot.yml"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  security-events: write
-
 jobs:
   zizmor:
     name: Audit GitHub Actions workflows
@@ -30,3 +26,6 @@ jobs:
           persona: pedantic
           min-severity: medium
           min-confidence: medium
+    permissions:
+      contents: read
+      security-events: write
