@@ -12,6 +12,9 @@ on:
       - ".github/dependabot.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   zizmor:
     name: Audit GitHub Actions workflows
